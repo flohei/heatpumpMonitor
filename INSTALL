@@ -1,0 +1,22 @@
+On Debian/Ubuntu:
+
+apt-get install python-serial python-rrdtool python-rrd python-setuptools rrdtool
+
+On other Distributions something similar.
+
+for all:
+
+* Checkout from Lauchpad or download and extract of the tar.bz2 file
+* Create dirs and copy files
+
+mkdir -p /var/lib/heatpumpMonitor/
+mkdir -p /usr/local/share/heatpumpMonitor/protocolVersions
+mkdir -p /var/www/graphs/
+cp heatpumpMonitor.ini /etc/heatpumpMonitor.ini
+cp protocolVersions/* /usr/local/share/heatpumpMonitor/protocolVersions/
+cp -R html/* /var/www/
+cp *.py /usr/local/sbin/
+chmod 750 /usr/local/sbin/heatpumpMonitor.py
+
+* edit /etc/heatpumpMonitor.ini
+* start with heatpumpMonitor.py start

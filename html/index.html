@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>heatpumpMonitor</title>
+		<link type="text/css" href="css/south-street/jquery-ui-1.8.18.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+		<script type="text/javascript">
+
+	$(function() {
+		$( "#tabs,#tabs_big" ).tabs({
+			ajaxOptions: {
+				cache: false,
+				error: function( xhr, status, index, anchor ) {
+					$( anchor.hash ).html(
+						"Couldn't load this tab. We'll try to fix this as soon as possible. " +
+						"If this wouldn't be a demo." );
+				}
+			}
+		});
+
+
+		$( "#radio" ).buttonset();
+
+
+		$("input[name='radio']").change(function(){
+		  if ($("input[name='radio']:checked").val() == '1') {
+		    $('#tabs').show();
+		    $('#tabs_big').hide();
+		  }
+		  else{
+		    $('#tabs_big').show();
+		    $('#tabs').hide();
+		  }
+		});
+		if ($("input[name='radio']:checked").val() == '1') {
+		    $('#tabs').show();
+		    $('#tabs_big').hide();
+		}
+		else{
+		    $('#tabs_big').show();
+		    $('#tabs').hide();
+		}
+
+		$.ajax({
+		  url: "graphs/actual_values.json",
+		  dataType: 'json',
+		  cache: false,
+		  success: function(data){
+		    $.each(data, function(key, val) {
+		      $('#'+key).html(val);
+		    });
+		  }
+		});
+
+		// Dialog			
+		$('#dialog').dialog({
+			autoOpen: false,
+			width: 600,
+			buttons: {
+				"Ok": function() { 
+					$(this).dialog("close"); 
+				}
+			}
+		});
+
+		// Dialog Link
+		$('#dialog_link').click(function(){
+			$('#dialog').dialog('open');
+			return false;
+		});
+	});
+
+		</script>
+		<style type="text/css">
+		     body { 
+			font: 62.5% "Trebuchet MS", sans-serif; margin: 20px;}
+			.demoHeaders { margin-top: 2em; }
+			#dialog_link {padding: .4em 1em .4em 20px;text-decoration: none;position: relative;}
+			#dialog_link span.ui-icon {margin: 0 5px 0 0;position: absolute;left: .2em;top: 50%;margin-top: -8px;}
+			ul#icons {margin: 0; padding: 0;}
+			ul#icons li {margin: 2px; position: relative; padding: 4px 0; cursor: pointer; float: left;  list-style: none;}
+			ul#icons span.ui-icon {float: left; margin: 0 4px;
+		    }
+		    .content {
+		      width:1000px;
+		      margin-left:auto;
+		      margin-right:auto;
+		    }
+		    .title {
+		      font-size:18px;
+		      text-align:center;
+		      padding: 20px;
+		    }
+		    .footer {
+		      text-align:right;
+		      padding-top: 20px;
+		    }
+		    table#values tr td {
+		      white-space: nowrap;
+		      text-align: center;
+		      font-weight: bold;
+		      font-size: 13px;
+		      padding: 4px;
+		    }
+		    table#values {
+		      margin-bottom: 5px;
+		    }
+		    .btns {
+		      padding-bottom: 5px;
+		    }
+		</style>
+	</head>
+	<body>
+  <div class="content">
+
+	  <div align="right">
+		  <IMG src="images/heatpumpMonitor_logo_400x45.png" width="400" height="45" align="right" border="0">
+	  </div>
+
+<div class="ui-widget">
+	<table class="ui-widget ui-widget-content" id="values">
+		<thead>
+			<tr class="ui-widget-header">
+				<th class="ui-state-default">Time</th>
+				<th class="ui-state-default">dhw T</th>
+				<th class="ui-state-default">inside T</th>
+				<th class="ui-state-default">outside T</th>
+				<th class="ui-state-default">flow T</th>
+				<th class="ui-state-default">return T</th>
+				<th class="ui-state-default">compressor htg</th>
+				<th class="ui-state-default">compressor dhw</th>				
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td id="time"></td>
+				<td id="dhw_temp"></td>
+				<td id="inside_temp"></td>
+				<td id="outside_temp"></td>
+				<td id="flow_temp"></td>
+				<td id="return_temp"></td>
+				<td id="compressor_heating"></td>
+				<td id="compressor_dhw"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<form class="btns">
+	<div id="radio">
+		<input type="radio" id="radio1" name="radio" checked="checked" value="1"/><label for="radio1">Small Graphs</label>
+		<input type="radio" id="radio2" name="radio" value="2"/><label for="radio2">Big Graphs</label>
+	</div>
+</form>
+
+<div id="tabs">
+	  <div class="title">Small Graphs</div>
+	  <ul>
+		  <li><a href="index_3hours_small.html">3 hours</a></li>
+		  <li><a href="index_halfday_small.html">halfday</a></li>
+		  <li><a href="index_day_small.html">day</a></li>
+		  <li><a href="index_week_small.html">week</a></li>
+		  <li><a href="index_month_small.html">month</a></li>
+		  <li><a href="index_year_small.html">year</a></li>
+	  </ul>
+</div>
+
+<div id="tabs_big">
+	  <div class="title">Big Graphs</div>
+	  <ul>
+		  <li><A href="index_3hours_big.html">3 hours</A></li>
+		  <li><A href="index_halfday_big.html">halfday</A></li>
+		  <li><A href="index_day_big.html">day</A></li>
+		  <li><A href="index_week_big.html">week</A></li>
+		  <li><A href="index_month_big.html">month</A></li>
+		  <li><A href="index_year_big.html">year</A></li>
+	  </ul>
+</div>
+
+	  <div class="footer">
+		<a href="#" id="dialog_link" class="ui-state-default ui-corner-all"><span class="ui-icon ui-icon-newwin"></span>About heatpumpMonitor</a></p>
+		<div id="dialog" title="About heatpumpMonitor">
+			<p>With this software you can monitor Stiebel Eltron LWZ heat pumps via a serial interface from your Linux server. It generates nice diagrams you can watch via a web browser. Additional features like alarming via email are integrated.
+			  <br/><br/>Author: Robert Penz
+			  <br/>site: <a href="http://robert.penz.name/heat-pump-lwz/">http://robert.penz.name/heat-pump-lwz/</a>
+			</p>
+		</div>
+	  </div>
+
+ </div>
+	</body>
+</html>
